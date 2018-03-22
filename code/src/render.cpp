@@ -3,6 +3,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <cstdio>
 #include <cassert>
+/* rand example: guess the number */
+#include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "GL_framework.h"
@@ -32,10 +34,8 @@ namespace Cube {
 namespace  MyGeomShader {
 	void myInitCode();
 	void myCleanupCode();
-	void myRenderCode(double currentTime);
+	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3);
 }
-
-
 
 ////////////////
 
@@ -93,7 +93,7 @@ void GLmousecb(MouseEvent ev) {
 	RV::prevMouse.lastx = ev.posx;
 	RV::prevMouse.lasty = ev.posy;
 }
-
+float randPoints[6];
 void GLinit(int width, int height) {
 	glViewport(0, 0, width, height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.f);
@@ -108,16 +108,13 @@ void GLinit(int width, int height) {
 	/*Box::setupCube();
 	Axis::setupAxis();
 	Cube::setupCube();*/
+	// Generate random points
+	srand(time(NULL));
 
+	for (int i = 0; i < 6; i++) {
+		randPoints[i] = rand() % 10 + 1;
+	}
 	MyGeomShader::myInitCode();
-
-
-
-
-
-
-
-
 
 }
 
@@ -127,7 +124,6 @@ void GLcleanup() {
 	Cube::cleanupCube();
 	*/
 	MyGeomShader::myCleanupCode();
-
 }
 
 void GLrender(double currentTime) {
@@ -145,7 +141,9 @@ void GLrender(double currentTime) {
 	Axis::drawAxis();
 	Cube::drawCube();*/
 
-	MyGeomShader::myRenderCode(currentTime);
+
+
+	MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
 
 	ImGui::Render();
 }
@@ -191,11 +189,16 @@ namespace  MyGeomShader {
 		
 		static const GLchar * vertex_shader_source[] = {
 			"#version 330																	\n\
+			uniform float x1;																\n\
+			uniform float x2;																\n\
+			uniform float x3;																\n\
+			uniform float y1;																\n\
+			uniform float y2;																\n\
+			uniform float y3;																\n\
 			void main() {																	\n\
-				const vec4 vertices[4] = vec4[4](vec4(1, 5, 0, 1.0),						\n\
-										 vec4(-1, 10, 0, 1.0),								\n\
-										 vec4(7, 3, 0, 1.0),								\n\
-										 vec4(10, 1, 0, 1.0));								\n\
+				vec4 vertices[3] = vec4[3](vec4(x1, y1, 0, 1.0),							\n\
+										   vec4(x2, y2, 0, 1.0),							\n\
+										   vec4(x3, y3, 0, 1.0));							\n\
 				gl_Position = vertices[gl_VertexID];										\n\
 			}" 
 		};
@@ -217,8 +220,8 @@ namespace  MyGeomShader {
 										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
 										       vec4(1, 0.25, 0.5, 1.0),						\n\
 										       vec4(0.25, 0, 0, 1.0),						\n\
-										       vec4( 1, 0, 0, 1.0),							\n\
-										       vec4( 0.5, 0, 0.5, 1.0));					\n\
+										       vec4(1, 0, 0, 1.0),							\n\
+										       vec4(0.5, 0, 0.5, 1.0));						\n\
 				color = colors[gl_PrimitiveID];												\n\
 			}" 
 		};
@@ -334,7 +337,7 @@ namespace  MyGeomShader {
 			"#version 330																	\n\
 			uniform mat4 rotation;															\n\
 			layout(triangles) in;															\n\
-			layout(triangle_strip, max_vertices = 96) out;									\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
 			void main()	{																	\n\
 				const vec4 vertices[4] = vec4[4](vec4(0.25, -0.25, 0.25, 1.0),				\n\
 										         vec4(0.25, 0.25, 0.25, 1.0),				\n\
@@ -362,7 +365,7 @@ namespace  MyGeomShader {
 										         vec4(0.25, 0.25, 0.25, 1.0));				\n\
 																							\n\
 				// Pintem tots els cubs														\n\
-				for (int i = 0; i < 4; i++) {												\n\
+				for (int i = 0; i < 3; i++) {												\n\
 					// Cara 1																\n\
 					for (int a = 0; a < 4; a++) {											\n\
 						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
@@ -444,11 +447,10 @@ namespace  MyGeomShader {
 		glDeleteProgram(myRenderProgram);
 	}
 
-	void  myInitCode(void) {
+	void myInitCode() {
 		myRenderProgram = myShaderCompile();
 		glCreateVertexArrays(1, &myVAO);
 		glBindVertexArray(myVAO);
-		srand(time(NULL));
 	}
 
 	/*
@@ -494,14 +496,24 @@ namespace  MyGeomShader {
 
 	//exercise 9
 	glm::mat4 myMVP;
-	void myRenderCode(double currentTime) {
+	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3) {
 		glUseProgram(myRenderProgram);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "time"), (GLfloat)currentTime);
+
+		// Random points
+		glUniform1f(glGetUniformLocation(myRenderProgram, "x1"), (GLfloat)x1);
+		glUniform1f(glGetUniformLocation(myRenderProgram, "x2"), (GLfloat)x2);
+		glUniform1f(glGetUniformLocation(myRenderProgram, "x3"), (GLfloat)x3);
+
+		glUniform1f(glGetUniformLocation(myRenderProgram, "y1"), (GLfloat)y1);
+		glUniform1f(glGetUniformLocation(myRenderProgram, "y2"), (GLfloat)y2);
+		glUniform1f(glGetUniformLocation(myRenderProgram, "y3"), (GLfloat)y3);
 
 		//matriz de rotacion
 		glm::mat4 rot = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
 		myMVP = RV::_MVP * rot;
 		glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rotation"), 1, GL_FALSE, glm::value_ptr(myMVP));
+
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 
