@@ -3,7 +3,8 @@
 #include <glm\gtc\matrix_transform.hpp>
 #include <cstdio>
 #include <cassert>
-
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 #include "GL_framework.h"
 
 ///////// fw decl
@@ -193,10 +194,20 @@ namespace  MyGeomShader {
 		"#version 330\n\
 		\n\
 		void main() {\n\
-		const vec4 vertices[4] = vec4[4](vec4(0, 6, 0, 1.0),\n\
-		vec4(10, 6, 0, 1.0),\n\
-		vec4(5,  6, 0, 1.0),\n\
-		vec4(-5,  6, 0, 1.0));\n\
+			float x1, x2, x3, x4, y1, y2, y3, y4; \n\
+		srand (time(NULL));\n\
+		x1 = (float)rand() % 10.0 + 1.0;\n\
+		y1 = (float)rand() % 10.0 + 1.0;\n\
+		x2 = (float)rand() % 10.0 + 1.0;\n\
+		y2 = (float)rand() % 10.0 + 1.0;\n\
+		x3 = (float)rand() % 10.0 + 1.0;\n\
+		y3 = (float)rand() % 10.0 + 1.0;\n\
+		x4 = (float)rand() % 10.0 + 1.0;\n\
+		y4 = (float)rand() % 10.0 + 1.0;\n\
+		const vec4 vertices[4] = vec4[4](vec4(x1, y1, 0, 1.0),\n\
+		vec4(x2, y2, 0, 1.0),\n\
+		vec4(x3, y3, 0, 1.0),\n\
+		vec4(x4, y4, 0, 1.0));\n\
 		gl_Position = vertices[gl_VertexID];\n\
 		}"	};
 
