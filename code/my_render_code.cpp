@@ -220,12 +220,14 @@ namespace  MyGeomShader {
 			"#version 330																	\n\
 			out vec4 color;																	\n\
 			void main() {																	\n\
-				const vec4 colors[6] = vec4[6](vec4(0, 1, 0, 1.0),							\n\
+				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
 										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
 										       vec4(1, 0.25, 0.5, 1.0),						\n\
 										       vec4(0.25, 0, 0, 1.0),						\n\
 										       vec4(1, 0, 0, 1.0),							\n\
-										       vec4(0.5, 0, 0.5, 1.0));						\n\
+										       vec4(0.5, 0, 0.5, 1.0),						\n\
+											   vec4(0, 0, 1, 1.0),							\n\
+											   vec4(0, 0.25, 0, 1.0));						\n\
 				color = colors[gl_PrimitiveID];												\n\
 			}"
 		};
@@ -336,8 +338,8 @@ namespace  MyGeomShader {
 
 		*/
 
-		//EXERCISE 8 & 9
-		static const GLchar * geom_shader_source[] = {
+		//////////////////////////////////////////////////////////////////////EXERCICI1
+		/*static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
 			uniform mat4 rotation;															\n\
 			layout(triangles) in;															\n\
@@ -368,47 +370,149 @@ namespace  MyGeomShader {
 										         vec4(0.25, -0.25, 0.25, 1.0),				\n\
 										         vec4(0.25, 0.25, 0.25, 1.0));				\n\
 																							\n\
-				// Pintem tots els cubs														\n\
+				 Pintem tots els cubs														\n\
 				for (int i = 0; i < 3; i++) {												\n\
-					// Cara 1																\n\
+					 Cara 1																\n\
 					for (int a = 0; a < 4; a++) {											\n\
 						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 0;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					// Cara 2																\n\
+					 Cara 2																\n\
 					for (int b = 0; b < 4; b++) {											\n\
 						gl_Position = rotation * vertices2[b] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 1;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					// Cara 3																\n\
+					 Cara 3																\n\
 					for (int c = 0; c < 4; c++) {											\n\
 						gl_Position = rotation * vertices3[c] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 2;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					// Cara 4																\n\
+					 Cara 4																\n\
 					for (int d = 0; d < 4; d++) {											\n\
 						gl_Position = rotation * vertices4[d] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 3;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					// Cara 5																\n\
+					 Cara 5																\n\
 					for (int e = 0; e < 4; e++) {											\n\
 						gl_Position = rotation * vertices5[e] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 4;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					// Cara 6																\n\
+					 Cara 6																\n\
 					for (int f = 0; f < 4; f++) {											\n\
 						gl_Position = rotation * vertices6[f] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 5;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+				}																			\n\
+			}"
+		};*/
+
+		//////////////////////////////////////////////////////////////////////EXERCICI2
+		static const GLchar * geom_shader_source[] = {
+			"#version 330																	\n\
+			uniform mat4 rotation;															\n\
+			layout(triangles) in;															\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
+			void main()	{																	\n\
+				const vec4 vertices[3] = vec4[3](vec4(0, 0, 1, 1),							\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices2[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices3[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(-1, 0, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices4[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices5[3] = vec4[3](vec4(0, -1, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices6[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, 1, 0, 1));							\n\
+																							\n\
+				const vec4 vertices7[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(-1, 0, 0, 1));						\n\
+																							\n\
+				const vec4 vertices8[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, -1, 0, 1));						\n\
+																							\n\
+																							\n\
+				// Pintem tots els octahedrons												\n\
+				for (int i = 0; i < 3; i++) {												\n\
+					// Cara 1																\n\
+					for (int a = 0; a < 3; a++) {											\n\
+						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 0;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 2																\n\
+					for (int b = 0; b < 3; b++) {											\n\
+						gl_Position = rotation * vertices2[b] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 1;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 3																\n\
+					for (int c = 0; c < 3; c++) {											\n\
+						gl_Position = rotation * vertices3[c] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 2;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 4																\n\
+					for (int d = 0; d < 3; d++) {											\n\
+						gl_Position = rotation * vertices4[d] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 3;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 5																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						gl_Position = rotation * vertices5[e] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 4;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 6																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						gl_Position = rotation * vertices6[f] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 5;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 7																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						gl_Position = rotation * vertices7[e] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 6;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 8																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						gl_Position = rotation * vertices8[f] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 7;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
