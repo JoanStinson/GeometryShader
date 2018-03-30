@@ -201,7 +201,7 @@ void GLinit(int width, int height) {
 void GLcleanup() {
 	/*Box::cleanupCube();
 	Axis::cleanupAxis();
-	Cube::cleanupCube(); */
+	Cube::cleanupCube();*/
 
 	MyGeomShader::myCleanupCode();
 }
@@ -221,11 +221,11 @@ void GLrender(double currentTime) {
 	Axis::drawAxis();
 	Cube::drawCube();*/
 
+	//TODO si es exercici 3 o 4 fer que la camara sigui orthonormal!!!
 	if (CheckClickOption()) MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
 
 	ImGui::Render();
 }
-
 
 //////////////////////////////////// COMPILE AND LINK
 GLuint compileShader(const char* shaderStr, GLenum shaderType, const char* name = "") {
