@@ -5,12 +5,11 @@
 #include <imgui\imgui_impl_sdl_gl3.h>
 #include <cstdio>
 #include <cassert>
-/* rand example: guess the number */
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
-#include "GL_framework.h"
+#include <stdio.h>      
+#include <stdlib.h>     
+#include <time.h>       
 #include <iostream>
+#include "GL_framework.h"
 
 ///////// fw decl
 namespace ImGui {
@@ -36,7 +35,7 @@ namespace Cube {
 	void drawCube();
 }
 
-namespace  MyGeomShader {
+namespace MyGeomShader {
 	void myInitCode();
 	void myCleanupCode();
 	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3);
@@ -46,6 +45,13 @@ namespace  MyGeomShader {
 ///////////////////////////////////////////////// GUI
 bool show_test_window = false;
 bool exercise[7];
+
+bool CheckClickOption() {
+	for (unsigned int i = 0; i < 7; i++) {
+		if (exercise[i]) return true;
+	}
+	return false;
+}
 
 void SetActiveExercise(int num) {
 	for (unsigned int i = 0; i < 7; i++) {
@@ -183,15 +189,14 @@ void GLinit(int width, int height) {
 	Cube::setupCube();*/
 
 	// Initialize booleans
-	for (unsigned int i = 0; i < 7; i++) {
+	for (unsigned int i = 0; i < 7; i++) 
 		exercise[i] = false;
-	}
 
 	// Generate random points
 	srand(time(NULL));
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 6; i++) 
 		randPoints[i] = rand() % 10 + 1;
-	}
+
 	MyGeomShader::myInitCode();
 
 }
@@ -199,8 +204,8 @@ void GLinit(int width, int height) {
 void GLcleanup() {
 	/*Box::cleanupCube();
 	Axis::cleanupAxis();
-	Cube::cleanupCube();
-	*/
+	Cube::cleanupCube(); */
+
 	MyGeomShader::myCleanupCode();
 }
 
@@ -219,13 +224,7 @@ void GLrender(double currentTime) {
 	Axis::drawAxis();
 	Cube::drawCube();*/
 
-	if(exercise[0]) MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
-	else if (exercise[1]) int a = 2;
-	else if (exercise[2]) int a = 2;
-	else if (exercise[3]) int a = 2;
-	else if (exercise[4]) int a = 2;
-	else if (exercise[5]) int a = 2;
-	else if (exercise[6]) int a = 2;
+	if (CheckClickOption()) MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
 
 	ImGui::Render();
 }
@@ -286,15 +285,6 @@ namespace  MyGeomShader {
 			}"
 		};
 
-		//To draw only 1 triangle:
-		/*static const GLchar * vertex_shader_source[] =
-		{
-		"#version 330\n\
-		\n\
-		void main() {\n\
-		gl_Position = vec4( 1, -0.25, 0.5, 1.0);\n\
-		}" };*/
-
 		static const GLchar * fragment_shader_source[] = {
 			"#version 330																	\n\
 			out vec4 color;																	\n\
@@ -311,114 +301,7 @@ namespace  MyGeomShader {
 			}"
 		};
 
-		/*
-		//to draw a triangle on each vertex:
-		static const GLchar * geom_shader_source[] =
-		{ "#version 330\n\
-		layout(triangles) in;\n\
-		layout(triangle_strip, max_vertices = 6) out;\n\
-		void main()\n\
-		{\n\
-		const vec4 vertices[3] = vec4[3](vec4(0.25, -0.25, 0.5, 1.0),\n\
-		vec4(0.25, 0.25, 0.5, 1.0),\n\
-		vec4(-0.25,  -0.25, 0.5, 1.0)); \n\
-		for (int i = 0; i <3; i++)\n\
-		{\n\
-		gl_Position = vertices[i] + gl_in[0].gl_Position;\n\
-		EmitVertex();\n\
-		}\n\
-		EndPrimitive();\n\
-		}" };
-		*/
-
-		/*
-		//to draw a square on each vertex from the vertex shader:
-		static const GLchar * geom_shader_source[] =
-		{ "#version 330										\n\
-		layout(triangles) in;							\n\
-		layout(triangle_strip, max_vertices =4)	out;\n\
-		const vec4 vertices[4] = vec4[4](vec4(0.25, -0.25, 0.5, 1.0),\n\
-		vec4(0.25, 0.25, 0.5, 1.0),\n\
-		vec4(-0.25,  -0.25, 0.5, 1.0),\n\
-		vec4(-0.25,  0.25, 0.5, 1.0)); \n\
-		void main(){									\n\
-		for(int i=0; i< 4; i++){						\n\
-		gl_Position =gl_in[0].gl_Position +vertices[i];	\n\
-		EmitVertex();								\n\
-		}												\n\
-		EndPrimitive();									\n\
-		}" 		};
-		*/
-
-		/*
-		//to draw a square based on a uniform variable:
-		static const GLchar * geom_shader_source[] =
-		{ "#version 330										\n\
-		uniform vec4 initPos;							\n\
-		layout(triangles) in;							\n\
-		layout(triangle_strip, max_vertices =4)	out;\n\
-		const vec4 vertices[4] = vec4[4](vec4(0.25, -0.25, 0.5, 1.0),\n\
-		vec4(0.25, 0.25, 0.5, 1.0),\n\
-		vec4(-0.25,  -0.25, 0.5, 1.0),\n\
-		vec4(-0.25,  0.25, 0.5, 1.0)); \n\
-		void main(){									\n\
-		for(int i=0; i< 4; i++){						\n\
-		gl_Position = initPos +vertices[i];	\n\
-		EmitVertex();								\n\
-		}												\n\
-		EndPrimitive();									\n\
-		}" };
-		*/
-
-		/*
-		//exercise 7 a: make the cube face rotate (with trigonometry)
-		static const GLchar * geom_shader_source[] =
-		{
-		"#version 330																		\n\
-		uniform float time;																	\n\
-		layout(triangles) in;																\n\
-		layout(triangle_strip, max_vertices = 4) out;										\n\
-		vec4 vertices[4] = vec4[4](vec4(0.25*cos(time) , -0.25, 0.5*sin(time), 1.0),		\n\
-		vec4(0.25*cos(time)  , 0.25, 0.5*sin(time), 1.0),			\n\
-		vec4(-0.25*cos(time)  , -0.25, 0.5*sin(time), 1.0),		\n\
-		vec4(-0.25*cos(time)  , 0.25, 0.5*sin(time), 1.0));		\n\
-		\n\
-		void main()																			\n\
-		{																					\n\
-		for(int i= 0; i<4; i++){														\n\
-		gl_Position = gl_in[0].gl_Position  + vertices[i];							\n\
-		EmitVertex();																\n\
-		}																				\n\
-		EndPrimitive();																	\n\
-		}"
-		};
-		*/
-		//exercise 7 b: make the cube face rotate (with transformation matrix)
-
-		/*
-		static const GLchar * geom_shader_source[] =
-		{ "#version 330															\n\
-		uniform float time;													\n\
-		uniform mat4 mvpMat;												\n\
-		layout(triangles) in;												\n\
-		layout(triangle_strip,max_vertices = 6) out;						\n\
-		void main(){														\n\
-		vec4 vertices[4]=vec4[4](vec4( 0.25, -0.25,0, 1.0),				\n\
-		vec4(0.25, 0.25, 0, 1.0),				\n\
-		vec4( -0.25,  -0.25, 0, 1.0),			\n\
-		vec4(-0.25,0.25,0,1.0));				\n\
-		for(int i = 0; i < 4; i++){										\n\
-		gl_Position = mvpMat*vertices[i];							\n\
-		EmitVertex();												\n\
-		}																\n\
-		\n\
-		EndPrimitive();													\n\
-		}" };
-
-		*/
-
-		//////////////////////////////////////////////////////////////////////EXERCICI1
-		/*static const GLchar * geom_shader_source[] = {
+		static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
 			uniform mat4 rotation;															\n\
 			layout(triangles) in;															\n\
@@ -449,44 +332,44 @@ namespace  MyGeomShader {
 										         vec4(0.25, -0.25, 0.25, 1.0),				\n\
 										         vec4(0.25, 0.25, 0.25, 1.0));				\n\
 																							\n\
-				 Pintem tots els cubs														\n\
+				// Pintem tots els cubs														\n\
 				for (int i = 0; i < 3; i++) {												\n\
-					 Cara 1																\n\
+					// Cara 1																\n\
 					for (int a = 0; a < 4; a++) {											\n\
 						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 0;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					 Cara 2																\n\
+					// Cara 2																\n\
 					for (int b = 0; b < 4; b++) {											\n\
 						gl_Position = rotation * vertices2[b] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 1;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					 Cara 3																\n\
+					// Cara 3																\n\
 					for (int c = 0; c < 4; c++) {											\n\
 						gl_Position = rotation * vertices3[c] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 2;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					 Cara 4																\n\
+					// Cara 4																\n\
 					for (int d = 0; d < 4; d++) {											\n\
 						gl_Position = rotation * vertices4[d] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 3;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					 Cara 5																\n\
+					// Cara 5																\n\
 					for (int e = 0; e < 4; e++) {											\n\
 						gl_Position = rotation * vertices5[e] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 4;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
-					 Cara 6																\n\
+					// Cara 6																\n\
 					for (int f = 0; f < 4; f++) {											\n\
 						gl_Position = rotation * vertices6[f] + gl_in[i].gl_Position;		\n\
 						gl_PrimitiveID = 5;													\n\
@@ -495,9 +378,72 @@ namespace  MyGeomShader {
 					EndPrimitive();															\n\
 				}																			\n\
 			}"
-		};*/
+		};
 
-		//////////////////////////////////////////////////////////////////////EXERCICI2
+		GLuint vertex_shader;
+		GLuint geom_shader;
+		GLuint fragment_shader;
+		GLuint program;
+
+		vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
+		glCompileShader(vertex_shader);
+
+		geom_shader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geom_shader, 1, geom_shader_source, NULL);
+		glCompileShader(geom_shader);
+
+		fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
+		glCompileShader(fragment_shader);
+
+		program = glCreateProgram();
+		glAttachShader(program, vertex_shader);
+		glAttachShader(program, geom_shader);
+		glAttachShader(program, fragment_shader);
+		glLinkProgram(program);
+
+		glDeleteShader(vertex_shader);
+		glDeleteShader(geom_shader);
+		glDeleteShader(fragment_shader);
+
+		return program;
+	}
+
+	GLuint myShaderCompile1(void) {
+
+		static const GLchar * vertex_shader_source[] = {
+			"#version 330																	\n\
+			uniform float x1;																\n\
+			uniform float x2;																\n\
+			uniform float x3;																\n\
+			uniform float y1;																\n\
+			uniform float y2;																\n\
+			uniform float y3;																\n\
+			void main() {																	\n\
+				vec4 vertices[3] = vec4[3](vec4(x1, y1, 0, 1.0),							\n\
+										   vec4(x2, y2, 0, 1.0),							\n\
+										   vec4(x3, y3, 0, 1.0));							\n\
+				gl_Position = vertices[gl_VertexID];										\n\
+			}"
+		};
+
+		static const GLchar * fragment_shader_source[] = {
+			"#version 330																	\n\
+			out vec4 color;																	\n\
+			void main() {																	\n\
+				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
+										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
+										       vec4(1, 0.25, 0.5, 1.0),						\n\
+										       vec4(0.25, 0, 0, 1.0),						\n\
+										       vec4(1, 0, 0, 1.0),							\n\
+										       vec4(0.5, 0, 0.5, 1.0),						\n\
+											   vec4(0, 0, 1, 1.0),							\n\
+											   vec4(0, 0.25, 0, 1.0));						\n\
+				color = colors[gl_PrimitiveID];												\n\
+			}"
+		};
+
 		static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
 			uniform mat4 rotation;															\n\
@@ -629,10 +575,15 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	void myCleanupCode() {
-		glDeleteVertexArrays(1, &myVAO);
-		glDeleteProgram(myRenderProgram);
-	}
+	/*GLuint myShaderCompile2(void){}
+
+	GLuint myShaderCompile3(void) {}
+
+	GLuint myShaderCompile4(void) {}
+
+	GLuint myShaderCompile5(void) {}
+
+	GLuint myShaderCompile6(void) {}*/
 
 	void myInitCode() {
 		myRenderProgram = myShaderCompile();
@@ -640,50 +591,24 @@ namespace  MyGeomShader {
 		glBindVertexArray(myVAO);
 	}
 
-	/*
-	//until 7a
-	void myRenderCode(double currentTime) {
-	glUseProgram(myRenderProgram);
-	glUniform1f(glGetUniformLocation(myRenderProgram, "time"), (GLfloat)currentTime);
-	//	glUniform4f(glGetUniformLocation(myRenderProgram, "initPos"), 0.0f,0.0f,-1.0f,0.0f);
-
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	void myCleanupCode() {
+		glDeleteVertexArrays(1, &myVAO);
+		glDeleteProgram(myRenderProgram);
 	}
-	*/
 
-
-	//7b. make the triangle rotate on itself
-
-	/*
-	glm::mat4 myMVP;
-	void myRenderCode(double currentTime) {
-	glUseProgram(myRenderProgram);
-	glUniform1f(glGetUniformLocation(myRenderProgram, "time"), (GLfloat)currentTime);
-	glm::mat4 rot = glm::rotate(glm::mat4(), 0.05f, glm::vec3(0.f, 1.f, 0.f));
-	myMVP = rot *myMVP;
-	glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "mvpMat"), 1, GL_FALSE, glm::value_ptr(myMVP));
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	}
-	*/
-
-	//exercise 8
-	/*
-	void myRenderCode(double currentTime) {
-
-	glUseProgram(myRenderProgram);
-	glm::mat4 rotation = { cos(currentTime), 0.f, -sin(currentTime), 0.f,
-	0.f, 1.f, 0.f, 0.f,
-	sin(currentTime), 0.f, cos(currentTime), 0.f,
-	0.f, 0.f, 0.f, 1.f };
-	glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rotation"), 1, GL_FALSE, glm::value_ptr(RV::_MVP));
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-	}*/
-
-	//exercise 9
 	glm::mat4 myMVP;
 	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3) {
+
+		// Compile the corresponding shader to the exercise
+		if (exercise[0]) myRenderProgram = myShaderCompile();
+		else if (exercise[1]) myRenderProgram = myShaderCompile1();
+		/*else if (exercise[2]) myRenderProgram = myShaderCompile2();
+		else if (exercise[3]) myRenderProgram = myShaderCompile3();
+		else if (exercise[4]) myRenderProgram = myShaderCompile4();
+		else if (exercise[5]) myRenderProgram = myShaderCompile5();
+		else if (exercise[6]) myRenderProgram = myShaderCompile6();*/
+
+		// Delta time or time between every frame
 		glUseProgram(myRenderProgram);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "time"), (GLfloat)currentTime);
 
@@ -696,7 +621,7 @@ namespace  MyGeomShader {
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y2"), (GLfloat)y2);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y3"), (GLfloat)y3);
 
-		//matriz de rotacion
+		// Rotation matrix
 		glm::mat4 rot = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
 		myMVP = RV::_MVP * rot;
 		glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rotation"), 1, GL_FALSE, glm::value_ptr(myMVP));
