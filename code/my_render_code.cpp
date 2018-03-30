@@ -10,6 +10,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include "GL_framework.h"
+#include <iostream>
 
 ///////// fw decl
 namespace ImGui {
@@ -39,6 +40,73 @@ namespace  MyGeomShader {
 	void myInitCode();
 	void myCleanupCode();
 	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3);
+}
+
+
+///////////////////////////////////////////////// GUI
+bool show_test_window = false;
+bool exercise[7];
+
+void SetActiveExercise(int num) {
+	for (unsigned int i = 0; i < 7; i++) {
+		if (i == num) {
+			exercise[i] = true;
+		}
+		else exercise[i] = false;
+	}
+}
+
+void GUI() {
+	bool show = true;
+	ImGui::Begin("Welcome!", &show, 0);
+
+	// Do your GUI code here....
+	{
+		const char* listbox_items[] = { "Exercise 1", "Exercise 2", "Exercise 3", "Exercise 4", "Exercise 5", "Exercise 6", "Exercise 7" };
+		static int listbox_item_current = -1, listbox_item_current2 = -1;
+		ImGui::ListBox("   Listbox\n(single select)", &listbox_item_current, listbox_items, IM_ARRAYSIZE(listbox_items), 7);
+		ImGui::PushItemWidth(-1);
+		//ImGui::ListBox("##listbox2", &listbox_item_current2, listbox_items, IM_ARRAYSIZE(listbox_items), 9);
+		ImGui::PopItemWidth();
+		
+		//std::cout << listbox_item_current;
+
+		switch (listbox_item_current) {
+			case 0: 
+				SetActiveExercise(0);
+				break;
+			case 1:
+				SetActiveExercise(1);
+				break;
+			case 2:
+				SetActiveExercise(2);
+				break;
+			case 3:
+				SetActiveExercise(3);
+				break;
+			case 4:
+				SetActiveExercise(4);
+				break;
+			case 5:
+				SetActiveExercise(5);
+				break;
+			case 6:
+				SetActiveExercise(6);
+				break;
+			default:
+				break;
+
+		}
+	}
+	// .........................
+
+	ImGui::End();
+
+	// Example code -- ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
+	if (show_test_window) {
+		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+		ImGui::ShowTestWindow(&show_test_window);
+	}
 }
 
 ////////////////
@@ -114,6 +182,11 @@ void GLinit(int width, int height) {
 	Axis::setupAxis();
 	Cube::setupCube();*/
 
+	// Initialize booleans
+	for (unsigned int i = 0; i < 7; i++) {
+		exercise[i] = false;
+	}
+
 	// Generate random points
 	srand(time(NULL));
 	for (int i = 0; i < 6; i++) {
@@ -146,7 +219,13 @@ void GLrender(double currentTime) {
 	Axis::drawAxis();
 	Cube::drawCube();*/
 
-	MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
+	if(exercise[0]) MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
+	else if (exercise[1]) int a = 2;
+	else if (exercise[2]) int a = 2;
+	else if (exercise[3]) int a = 2;
+	else if (exercise[4]) int a = 2;
+	else if (exercise[5]) int a = 2;
+	else if (exercise[6]) int a = 2;
 
 	ImGui::Render();
 }
@@ -1438,32 +1517,4 @@ void main() {\n\
 	}
 
 
-}
-
-///////////////////////////////////////////////// GUI
-bool show_test_window = false;
-bool exercise1 = true, exercise2, exercise3, exercise4, exercise5, exercise6, exercise7;
-void GUI() {
-	bool show = true;
-	ImGui::Begin("Welcome!", &show, 0);
-
-	// Do your GUI code here....
-	{
-		ImGui::Checkbox("Exercise 1", &exercise1);
-		ImGui::Checkbox("Exercise 2", &exercise2);
-		ImGui::Checkbox("Exercise 3", &exercise3);
-		ImGui::Checkbox("Exercise 4", &exercise4);
-		ImGui::Checkbox("Exercise 5", &exercise5);
-		ImGui::Checkbox("Exercise 6", &exercise6);
-		ImGui::Checkbox("Exercise 7", &exercise7);
-	}
-	// .........................
-
-	ImGui::End();
-
-	// Example code -- ImGui test window. Most of the sample code is in ImGui::ShowTestWindow()
-	if (show_test_window) {
-		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-		ImGui::ShowTestWindow(&show_test_window);
-	}
 }
