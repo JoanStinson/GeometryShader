@@ -70,13 +70,11 @@ void GUI() {
 	{
 		const char* listbox_items[] = { "Exercise 1", "Exercise 2", "Exercise 3", "Exercise 4", "Exercise 5", "Exercise 6", "Exercise 7" };
 		static int listbox_item_current = -1, listbox_item_current2 = -1;
-		ImGui::ListBox("   Listbox\n(single select)", &listbox_item_current, listbox_items, IM_ARRAYSIZE(listbox_items), 7);
+		ImGui::ListBox("Click on\nany exercise!\n\n(single select)", &listbox_item_current, listbox_items, IM_ARRAYSIZE(listbox_items), 7);
 		ImGui::PushItemWidth(-1);
-		//ImGui::ListBox("##listbox2", &listbox_item_current2, listbox_items, IM_ARRAYSIZE(listbox_items), 9);
 		ImGui::PopItemWidth();
 		
-		//std::cout << listbox_item_current;
-
+		// Choose exercise in GUI
 		switch (listbox_item_current) {
 			case 0: 
 				SetActiveExercise(0);
@@ -101,7 +99,6 @@ void GUI() {
 				break;
 			default:
 				break;
-
 		}
 	}
 	// .........................
@@ -303,7 +300,7 @@ namespace  MyGeomShader {
 
 		static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
-			uniform mat4 rotation;															\n\
+			uniform mat4 rot;																\n\
 			layout(triangles) in;															\n\
 			layout(triangle_strip, max_vertices = 72) out;									\n\
 			void main()	{																	\n\
@@ -336,42 +333,42 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 3; i++) {												\n\
 					// Cara 1																\n\
 					for (int a = 0; a < 4; a++) {											\n\
-						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices[a] + gl_in[i].gl_Position;				\n\
 						gl_PrimitiveID = 0;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 2																\n\
 					for (int b = 0; b < 4; b++) {											\n\
-						gl_Position = rotation * vertices2[b] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices2[b] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 1;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 3																\n\
 					for (int c = 0; c < 4; c++) {											\n\
-						gl_Position = rotation * vertices3[c] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices3[c] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 2;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 4																\n\
 					for (int d = 0; d < 4; d++) {											\n\
-						gl_Position = rotation * vertices4[d] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices4[d] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 3;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 5																\n\
 					for (int e = 0; e < 4; e++) {											\n\
-						gl_Position = rotation * vertices5[e] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices5[e] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 4;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 6																\n\
 					for (int f = 0; f < 4; f++) {											\n\
-						gl_Position = rotation * vertices6[f] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices6[f] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 5;													\n\
 						EmitVertex();														\n\
 					}																		\n\
@@ -446,7 +443,7 @@ namespace  MyGeomShader {
 
 		static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
-			uniform mat4 rotation;															\n\
+			uniform mat4 rot;																\n\
 			layout(triangles) in;															\n\
 			layout(triangle_strip, max_vertices = 72) out;									\n\
 			void main()	{																	\n\
@@ -487,56 +484,56 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 3; i++) {												\n\
 					// Cara 1																\n\
 					for (int a = 0; a < 3; a++) {											\n\
-						gl_Position = rotation * vertices[a] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices[a] + gl_in[i].gl_Position;				\n\
 						gl_PrimitiveID = 0;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 2																\n\
 					for (int b = 0; b < 3; b++) {											\n\
-						gl_Position = rotation * vertices2[b] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices2[b] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 1;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 3																\n\
 					for (int c = 0; c < 3; c++) {											\n\
-						gl_Position = rotation * vertices3[c] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices3[c] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 2;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 4																\n\
 					for (int d = 0; d < 3; d++) {											\n\
-						gl_Position = rotation * vertices4[d] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices4[d] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 3;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 5																\n\
 					for (int e = 0; e < 3; e++) {											\n\
-						gl_Position = rotation * vertices5[e] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices5[e] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 4;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 6																\n\
 					for (int f = 0; f < 3; f++) {											\n\
-						gl_Position = rotation * vertices6[f] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices6[f] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 5;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 7																\n\
 					for (int e = 0; e < 3; e++) {											\n\
-						gl_Position = rotation * vertices7[e] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices7[e] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 6;													\n\
 						EmitVertex();														\n\
 					}																		\n\
 					EndPrimitive();															\n\
 					// Cara 8																\n\
 					for (int f = 0; f < 3; f++) {											\n\
-						gl_Position = rotation * vertices8[f] + gl_in[i].gl_Position;		\n\
+						gl_Position = rot * vertices8[f] + gl_in[i].gl_Position;			\n\
 						gl_PrimitiveID = 7;													\n\
 						EmitVertex();														\n\
 					}																		\n\
@@ -575,11 +572,331 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	/*GLuint myShaderCompile2(void){}
+	GLuint myShaderCompile2(void) {
 
-	GLuint myShaderCompile3(void) {}
+		static const GLchar * vertex_shader_source[] = {
+			"#version 330																	\n\
+			uniform float x1;																\n\
+			uniform float x2;																\n\
+			uniform float x3;																\n\
+			uniform float y1;																\n\
+			uniform float y2;																\n\
+			uniform float y3;																\n\
+			void main() {																	\n\
+				vec4 vertices[3] = vec4[3](vec4(x1, y1, 0, 1.0),							\n\
+										   vec4(x2, y2, 0, 1.0),							\n\
+										   vec4(x3, y3, 0, 1.0));							\n\
+				gl_Position = vertices[gl_VertexID];										\n\
+			}"
+		};
 
-	GLuint myShaderCompile4(void) {}
+		static const GLchar * fragment_shader_source[] = {
+			"#version 330																	\n\
+			out vec4 color;																	\n\
+			void main() {																	\n\
+				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
+										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
+										       vec4(1, 0.25, 0.5, 1.0),						\n\
+										       vec4(0.25, 0, 0, 1.0),						\n\
+										       vec4(1, 0, 0, 1.0),							\n\
+										       vec4(0.5, 0, 0.5, 1.0),						\n\
+											   vec4(0, 0, 1, 1.0),							\n\
+											   vec4(0, 0.25, 0, 1.0));						\n\
+				color = colors[gl_PrimitiveID];												\n\
+			}"
+		};
+
+		static const GLchar * geom_shader_source[] = {
+			"#version 330																	\n\
+			uniform mat4 trans;																\n\
+			uniform mat4 itrans;															\n\
+			layout(triangles) in;															\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
+			void main()	{																	\n\
+				const vec4 vertices[4] = vec4[4](vec4(0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(0.25, 0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, 0.25, 0.25, 1.0));				\n\
+				const vec4 vertices2[4]= vec4[4](vec4(0.25, 0.25, 0.25, 1.0),				\n\
+										         vec4(0.25, 0.25, -0.25, 1.0),				\n\
+										         vec4(-0.25, 0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, 0.25, -0.25, 1.0));			\n\
+				const vec4 vertices3[4]= vec4[4](vec4(-0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, 0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, -0.25, -0.25, 1.0),			\n\
+										         vec4(-0.25, 0.25, -0.25, 1.0));			\n\
+				const vec4 vertices4[4]= vec4[4](vec4(-0.25, -0.25, -0.25, 1.0),			\n\
+										         vec4(-0.25, 0.25, -0.25, 1.0),				\n\
+										         vec4(0.25, -0.25, -0.25, 1.0),				\n\
+										         vec4(0.25, 0.25, -0.25, 1.0));				\n\
+				const vec4 vertices5[4]= vec4[4](vec4(-0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(-0.25, -0.25, -0.25, 1.0),			\n\
+										         vec4(0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(0.25, -0.25, -0.25, 1.0));			\n\
+				const vec4 vertices6[4]= vec4[4](vec4(0.25, -0.25, -0.25, 1.0),				\n\
+										         vec4(0.25, 0.25, -0.25, 1.0),				\n\
+										         vec4(0.25, -0.25, 0.25, 1.0),				\n\
+										         vec4(0.25, 0.25, 0.25, 1.0));				\n\
+																							\n\
+				// Pintem tots els cubs														\n\
+				for (int i = 0; i < 3; i++) {												\n\
+					// Cara 1																\n\
+					for (int a = 0; a < 4; a++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices[a]+gl_in[i].gl_Position; \n\
+						else gl_Position = itrans * vertices[a] + gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 0;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 2																\n\
+					for (int b = 0; b < 4; b++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices2[b]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans * vertices2[b] + gl_in[i].gl_Position;	\n\
+						gl_PrimitiveID = 1;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 3																\n\
+					for (int c = 0; c < 4; c++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices3[c]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans * vertices3[c] + gl_in[i].gl_Position;	\n\
+						gl_PrimitiveID = 2;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 4																\n\
+					for (int d = 0; d < 4; d++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices4[d]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans * vertices4[d] + gl_in[i].gl_Position;	\n\
+						gl_PrimitiveID = 3;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 5																\n\
+					for (int e = 0; e < 4; e++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices5[e]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans * vertices5[e] + gl_in[i].gl_Position;	\n\
+						gl_PrimitiveID = 4;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 6																\n\
+					for (int f = 0; f < 4; f++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices6[f]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans * vertices6[f] + gl_in[i].gl_Position;	\n\
+						gl_PrimitiveID = 5;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+				}																			\n\
+			}"
+		};
+
+		GLuint vertex_shader;
+		GLuint geom_shader;
+		GLuint fragment_shader;
+		GLuint program;
+
+		vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
+		glCompileShader(vertex_shader);
+
+		geom_shader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geom_shader, 1, geom_shader_source, NULL);
+		glCompileShader(geom_shader);
+
+		fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
+		glCompileShader(fragment_shader);
+
+		program = glCreateProgram();
+		glAttachShader(program, vertex_shader);
+		glAttachShader(program, geom_shader);
+		glAttachShader(program, fragment_shader);
+		glLinkProgram(program);
+
+		glDeleteShader(vertex_shader);
+		glDeleteShader(geom_shader);
+		glDeleteShader(fragment_shader);
+
+		return program;
+	}
+
+	GLuint myShaderCompile3(void) {
+
+		static const GLchar * vertex_shader_source[] = {
+			"#version 330																	\n\
+			uniform float x1;																\n\
+			uniform float x2;																\n\
+			uniform float x3;																\n\
+			uniform float y1;																\n\
+			uniform float y2;																\n\
+			uniform float y3;																\n\
+			void main() {																	\n\
+				vec4 vertices[3] = vec4[3](vec4(x1, y1, 0, 1.0),							\n\
+										   vec4(x2, y2, 0, 1.0),							\n\
+										   vec4(x3, y3, 0, 1.0));							\n\
+				gl_Position = vertices[gl_VertexID];										\n\
+			}"
+		};
+
+		static const GLchar * fragment_shader_source[] = {
+			"#version 330																	\n\
+			out vec4 color;																	\n\
+			void main() {																	\n\
+				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
+										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
+										       vec4(1, 0.25, 0.5, 1.0),						\n\
+										       vec4(0.25, 0, 0, 1.0),						\n\
+										       vec4(1, 0, 0, 1.0),							\n\
+										       vec4(0.5, 0, 0.5, 1.0),						\n\
+											   vec4(0, 0, 1, 1.0),							\n\
+											   vec4(0, 0.25, 0, 1.0));						\n\
+				color = colors[gl_PrimitiveID];												\n\
+			}"
+		};
+
+		static const GLchar * geom_shader_source[] = {
+			"#version 330																	\n\
+			uniform mat4 trans;																\n\
+			uniform mat4 itrans;															\n\
+			layout(triangles) in;															\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
+			void main()	{																	\n\
+				const vec4 vertices[3] = vec4[3](vec4(0, 0, 1, 1),							\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices2[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices3[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(-1, 0, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices4[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices5[3] = vec4[3](vec4(0, -1, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices6[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, 1, 0, 1));							\n\
+																							\n\
+				const vec4 vertices7[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(-1, 0, 0, 1));						\n\
+																							\n\
+				const vec4 vertices8[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, -1, 0, 1));						\n\
+																							\n\
+																							\n\
+				// Pintem tots els octahedrons												\n\
+				for (int i = 0; i < 3; i++) {												\n\
+					// Cara 1																\n\
+					for (int a = 0; a < 3; a++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices[a]+gl_in[i].gl_Position;	\n\
+						else gl_Position = itrans*vertices[a]+gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 0;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 2																\n\
+					for (int b = 0; b < 3; b++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices2[b]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices2[b]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 1;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 3																\n\
+					for (int c = 0; c < 3; c++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices3[c]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices3[c]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 2;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 4																\n\
+					for (int d = 0; d < 3; d++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices4[d]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices4[d]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 3;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 5																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices5[e]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices5[e]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 4;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 6																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices6[f]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices6[f]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 5;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 7																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices7[e]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices7[e]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 6;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 8																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						if (i%2 == 0) gl_Position = trans*vertices8[f]+gl_in[i].gl_Position;\n\
+						else gl_Position = itrans*vertices8[f]+gl_in[i].gl_Position;		\n\
+						gl_PrimitiveID = 7;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+				}																			\n\
+			}"
+		};
+
+		GLuint vertex_shader;
+		GLuint geom_shader;
+		GLuint fragment_shader;
+		GLuint program;
+
+		vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
+		glCompileShader(vertex_shader);
+
+		geom_shader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geom_shader, 1, geom_shader_source, NULL);
+		glCompileShader(geom_shader);
+
+		fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
+		glCompileShader(fragment_shader);
+
+		program = glCreateProgram();
+		glAttachShader(program, vertex_shader);
+		glAttachShader(program, geom_shader);
+		glAttachShader(program, fragment_shader);
+		glLinkProgram(program);
+
+		glDeleteShader(vertex_shader);
+		glDeleteShader(geom_shader);
+		glDeleteShader(fragment_shader);
+
+		return program;
+	}
+
+	/*GLuint myShaderCompile4(void) {}
 
 	GLuint myShaderCompile5(void) {}
 
@@ -597,14 +914,15 @@ namespace  MyGeomShader {
 	}
 
 	glm::mat4 myMVP;
+	float testval = 6.0f;
 	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3) {
 
 		// Compile the corresponding shader to the exercise
 		if (exercise[0]) myRenderProgram = myShaderCompile();
 		else if (exercise[1]) myRenderProgram = myShaderCompile1();
-		/*else if (exercise[2]) myRenderProgram = myShaderCompile2();
+		else if (exercise[2]) myRenderProgram = myShaderCompile2();
 		else if (exercise[3]) myRenderProgram = myShaderCompile3();
-		else if (exercise[4]) myRenderProgram = myShaderCompile4();
+		/*else if (exercise[4]) myRenderProgram = myShaderCompile4();
 		else if (exercise[5]) myRenderProgram = myShaderCompile5();
 		else if (exercise[6]) myRenderProgram = myShaderCompile6();*/
 
@@ -616,19 +934,46 @@ namespace  MyGeomShader {
 		glUniform1f(glGetUniformLocation(myRenderProgram, "x1"), (GLfloat)x1);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "x2"), (GLfloat)x2);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "x3"), (GLfloat)x3);
-
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y1"), (GLfloat)y1);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y2"), (GLfloat)y2);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y3"), (GLfloat)y3);
 
-		// Rotation matrix
-		glm::mat4 rot = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
-		myMVP = RV::_MVP * rot;
-		glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rotation"), 1, GL_FALSE, glm::value_ptr(myMVP));
+		if (!exercise[2] && !exercise[3]) {
+			// Rotation matrix (esquerra -> dreta)
+			glm::mat4 rot = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
+			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rot"), 1, GL_FALSE, glm::value_ptr(myMVP));
+			myMVP = RV::_MVP * rot;
+		}
+		else {
+			testval -= 0.1f;
+			if (testval < -6.0f)
+				testval = 6.0f;
+
+			// Rotation matrix (dreta -> esquerra)
+			glm::mat4 rot = glm::rotate(glm::mat4(), (float)(-0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
+			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rot"), 1, GL_FALSE, glm::value_ptr(myMVP));
+
+			//Translation matrix (amunt -> avall)
+			glm::mat4 trans = glm::translate(glm::mat4(), glm::vec3(0.f, testval, 0.f));
+			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "trans"), 1, GL_FALSE, glm::value_ptr(myMVP));
+			myMVP = RV::_MVP * rot * trans;
+
+
+			// Rotation matrix (dreta -> esquerra)
+			glm::mat4 rot2 = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
+			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rot2"), 1, GL_FALSE, glm::value_ptr(myMVP));
+
+			//Translation matrix (amunt -> avall)
+			glm::mat4 itrans = glm::translate(glm::mat4(), glm::vec3(0.f, testval, 0.f));
+			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "itrans"), 1, GL_FALSE, glm::value_ptr(myMVP));
+			myMVP = RV::_MVP * rot2 * itrans;
+
+			//std::cout << testval << std::endl;
+
+		}
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
-
 }
 
 ////////////////////////////////////////////////// BOX
