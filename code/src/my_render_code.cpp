@@ -45,6 +45,15 @@ namespace MyGeomShader {
 ///////////////////////////////////////////////// GUI
 bool show_test_window = false;
 bool exercise[7];
+float randPoints[6];
+int createRand = 0;
+
+float RandomFloat(float a, float b) {
+	float random = ((float)rand()) / (float)RAND_MAX;
+	float diff = b - a;
+	float r = random * diff;
+	return a + r;
+}
 
 bool CheckClickOption() {
 	for (unsigned int i = 0; i < 7; i++) {
@@ -78,24 +87,73 @@ void GUI() {
 		switch (listbox_item_current) {
 			case 0: 
 				SetActiveExercise(0);
+				if (createRand != 1) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(10.f, 1.f);
+					createRand = 1;
+				}
 				break;
 			case 1:
 				SetActiveExercise(1);
+				if (createRand != 2) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(10.f, 1.f);
+					createRand = 2;
+				}
 				break;
 			case 2:
 				SetActiveExercise(2);
+				if (createRand != 3) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(3.f, 1.f);
+					createRand = 3;
+				}
 				break;
 			case 3:
 				SetActiveExercise(3);
+				if (createRand != 4) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(3.f, 1.f);
+					createRand = 4;
+				}
 				break;
 			case 4:
 				SetActiveExercise(4);
+				if (createRand != 5) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(10.f, 1.f);
+					createRand = 5;
+				}
 				break;
 			case 5:
 				SetActiveExercise(5);
+				if (createRand != 6) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(10.f, 1.f);
+					createRand = 6;
+				}
 				break;
 			case 6:
 				SetActiveExercise(6);
+				if (createRand != 7) {
+					// Generate random points
+					srand(time(NULL));
+					for (int i = 0; i < 6; i++)
+						randPoints[i] = RandomFloat(10.f, 1.f);
+					createRand = 7;
+				}
 				break;
 			default:
 				break;
@@ -169,7 +227,6 @@ void GLmousecb(MouseEvent ev) {
 	RV::prevMouse.lasty = ev.posy;
 }
 
-float randPoints[6];
 void GLinit(int width, int height) {
 	glViewport(0, 0, width, height);
 	glClearColor(0.2f, 0.2f, 0.2f, 1.f);
@@ -178,7 +235,9 @@ void GLinit(int width, int height) {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
+	RV::panv[0] -= 10.0f;
+
+	//RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
 
 	// Setup shaders & geometry
 	/*Box::setupCube();
@@ -191,7 +250,7 @@ void GLinit(int width, int height) {
 
 	// Generate random points
 	srand(time(NULL));
-	for (int i = 0; i < 6; i++) 
+	for (int i = 0; i < 6; i++)
 		randPoints[i] = rand() % 10 + 1;
 
 	MyGeomShader::myInitCode();
@@ -206,7 +265,7 @@ void GLcleanup() {
 	MyGeomShader::myCleanupCode();
 }
 
-void GLrender(double currentTime) {
+void GLrender(double currentTime, int width, int height) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	RV::_modelView = glm::mat4(1.f);
@@ -221,8 +280,15 @@ void GLrender(double currentTime) {
 	Axis::drawAxis();
 	Cube::drawCube();*/
 
-	//TODO si es exercici 3 o 4 fer que la camara sigui orthonormal!!!
-	if (CheckClickOption()) MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
+	if (CheckClickOption()) {
+		if (exercise[2] || exercise[3]) {
+			float scale = 100.f;
+			RV::_projection = glm::ortho(-(float)width / scale, (float)width / scale, -(float)height / scale, (float)height / scale, RV::zNear, RV::zFar);
+		}
+		else RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
+		//TODO crear 1 objecte al shader y cridarho cada cop que volem pintar un altre
+		MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1], randPoints[2], randPoints[3], randPoints[4], randPoints[5]);
+	}
 
 	ImGui::Render();
 }
@@ -264,7 +330,7 @@ namespace  MyGeomShader {
 	GLuint myRenderProgram;
 	GLuint myVAO;
 
-	GLuint myShaderCompile(void) {
+	GLuint myShaderCompile1(void) {
 
 		static const GLchar * vertex_shader_source[] = {
 			"#version 330																	\n\
@@ -407,7 +473,7 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	GLuint myShaderCompile1(void) {
+	GLuint myShaderCompile2(void) {
 
 		static const GLchar * vertex_shader_source[] = {
 			"#version 330																	\n\
@@ -572,7 +638,7 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	GLuint myShaderCompile2(void) {
+	GLuint myShaderCompile3(void) {
 
 		static const GLchar * vertex_shader_source[] = {
 			"#version 330																	\n\
@@ -722,7 +788,7 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	GLuint myShaderCompile3(void) {
+	GLuint myShaderCompile4(void) {
 
 		static const GLchar * vertex_shader_source[] = {
 			"#version 330																	\n\
@@ -896,14 +962,177 @@ namespace  MyGeomShader {
 		return program;
 	}
 
-	/*GLuint myShaderCompile4(void) {}
+	GLuint myShaderCompile5(void) {
 
-	GLuint myShaderCompile5(void) {}
+		static const GLchar * vertex_shader_source[] = {
+			"#version 330																	\n\
+			uniform float x1;																\n\
+			uniform float x2;																\n\
+			uniform float x3;																\n\
+			uniform float y1;																\n\
+			uniform float y2;																\n\
+			uniform float y3;																\n\
+			void main() {																	\n\
+				vec4 vertices[3] = vec4[3](vec4(x1, y1, 0, 1.0),							\n\
+										   vec4(x2, y2, 0, 1.0),							\n\
+										   vec4(x3, y3, 0, 1.0));							\n\
+				gl_Position = vertices[gl_VertexID];										\n\
+			}"
+		};
 
-	GLuint myShaderCompile6(void) {}*/
+		static const GLchar * fragment_shader_source[] = {
+			"#version 330																	\n\
+			out vec4 color;																	\n\
+			void main() {																	\n\
+				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
+										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
+										       vec4(1, 0.25, 0.5, 1.0),						\n\
+										       vec4(0.25, 0, 0, 1.0),						\n\
+										       vec4(1, 0, 0, 1.0),							\n\
+										       vec4(0.5, 0, 0.5, 1.0),						\n\
+											   vec4(0, 0, 1, 1.0),							\n\
+											   vec4(0, 0.25, 0, 1.0));						\n\
+				color = colors[gl_PrimitiveID];												\n\
+			}"
+		};
+
+		static const GLchar * geom_shader_source[] = {
+			"#version 330																	\n\
+			uniform mat4 rot;																\n\
+			layout(triangles) in;															\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
+			void main()	{																	\n\
+				const vec4 vertices[3] = vec4[3](vec4(0, 0, 1, 1),							\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices2[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices3[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(-1, 0, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices4[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, -1, 0, 1),							\n\
+										         vec4(0, 0, 1, 1));							\n\
+																							\n\
+				const vec4 vertices5[3] = vec4[3](vec4(0, -1, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(1, 0, 0, 1));							\n\
+																							\n\
+				const vec4 vertices6[3] = vec4[3](vec4(1, 0, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, 1, 0, 1));							\n\
+																							\n\
+				const vec4 vertices7[3] = vec4[3](vec4(0, 1, 0, 1),							\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(-1, 0, 0, 1));						\n\
+																							\n\
+				const vec4 vertices8[3] = vec4[3](vec4(-1, 0, 0, 1),						\n\
+										         vec4(0, 0, -1, 1),							\n\
+										         vec4(0, -1, 0, 1));						\n\
+																							\n\
+																							\n\
+				// Pintem tots els octahedrons												\n\
+				for (int i = 0; i < 3; i++) {												\n\
+					// Cara 1																\n\
+					for (int a = 0; a < 3; a++) {											\n\
+						gl_Position = rot * vertices[a] + gl_in[i].gl_Position;				\n\
+						gl_PrimitiveID = 0;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 2																\n\
+					for (int b = 0; b < 3; b++) {											\n\
+						gl_Position = rot * vertices2[b] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 1;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 3																\n\
+					for (int c = 0; c < 3; c++) {											\n\
+						gl_Position = rot * vertices3[c] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 2;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 4																\n\
+					for (int d = 0; d < 3; d++) {											\n\
+						gl_Position = rot * vertices4[d] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 3;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 5																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						gl_Position = rot * vertices5[e] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 4;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 6																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						gl_Position = rot * vertices6[f] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 5;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 7																\n\
+					for (int e = 0; e < 3; e++) {											\n\
+						gl_Position = rot * vertices7[e] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 6;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+					// Cara 8																\n\
+					for (int f = 0; f < 3; f++) {											\n\
+						gl_Position = rot * vertices8[f] + gl_in[i].gl_Position;			\n\
+						gl_PrimitiveID = 7;													\n\
+						EmitVertex();														\n\
+					}																		\n\
+					EndPrimitive();															\n\
+				}																			\n\
+			}"
+		};
+
+		GLuint vertex_shader;
+		GLuint geom_shader;
+		GLuint fragment_shader;
+		GLuint program;
+
+		vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex_shader, 1, vertex_shader_source, NULL);
+		glCompileShader(vertex_shader);
+
+		geom_shader = glCreateShader(GL_GEOMETRY_SHADER);
+		glShaderSource(geom_shader, 1, geom_shader_source, NULL);
+		glCompileShader(geom_shader);
+
+		fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment_shader, 1, fragment_shader_source, NULL);
+		glCompileShader(fragment_shader);
+
+		program = glCreateProgram();
+		glAttachShader(program, vertex_shader);
+		glAttachShader(program, geom_shader);
+		glAttachShader(program, fragment_shader);
+		glLinkProgram(program);
+
+		glDeleteShader(vertex_shader);
+		glDeleteShader(geom_shader);
+		glDeleteShader(fragment_shader);
+
+		return program;
+	}
+
+	/*GLuint myShaderCompile6(void) {}
+
+	GLuint myShaderCompile7(void) {}*/
 
 	void myInitCode() {
-		myRenderProgram = myShaderCompile();
+		myRenderProgram = myShaderCompile1();
 		glCreateVertexArrays(1, &myVAO);
 		glBindVertexArray(myVAO);
 	}
@@ -918,13 +1147,13 @@ namespace  MyGeomShader {
 	void myRenderCode(double currentTime, float x1, float x2, float x3, float y1, float y2, float y3) {
 
 		// Compile the corresponding shader to the exercise
-		if (exercise[0]) myRenderProgram = myShaderCompile();
-		else if (exercise[1]) myRenderProgram = myShaderCompile1();
-		else if (exercise[2]) myRenderProgram = myShaderCompile2();
-		else if (exercise[3]) myRenderProgram = myShaderCompile3();
-		/*else if (exercise[4]) myRenderProgram = myShaderCompile4();
-		else if (exercise[5]) myRenderProgram = myShaderCompile5();
-		else if (exercise[6]) myRenderProgram = myShaderCompile6();*/
+		if (exercise[0]) myRenderProgram = myShaderCompile1();
+		else if (exercise[1]) myRenderProgram = myShaderCompile2();
+		else if (exercise[2]) myRenderProgram = myShaderCompile3();
+		else if (exercise[3]) myRenderProgram = myShaderCompile4();
+		/*else if (exercise[4]) myRenderProgram = myShaderCompile5();
+		else if (exercise[5]) myRenderProgram = myShaderCompile6();
+		else if (exercise[6]) myRenderProgram = myShaderCompile7();*/
 
 		// Delta time or time between every frame
 		glUseProgram(myRenderProgram);
@@ -940,7 +1169,7 @@ namespace  MyGeomShader {
 
 		if (!exercise[2] && !exercise[3]) {
 			// Rotation matrix (esquerra -> dreta)
-			glm::mat4 rot = glm::rotate(glm::mat4(), (float)(0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
+			glm::mat4 rot = glm::rotate(glm::mat4(), (float)5.f, glm::vec3(0.f, 1.f, 0.f));
 			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rot"), 1, GL_FALSE, glm::value_ptr(myMVP));
 			myMVP = RV::_MVP * rot;
 		}
