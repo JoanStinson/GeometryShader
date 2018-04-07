@@ -38,7 +38,7 @@ namespace Cube {
 namespace MyGeomShader {
 	void myInitCode();
 	void myCleanupCode();
-	void myRenderCode(double currentTime, float x1, float y1);
+	void myRenderCode(double currentTime, float x1, float y1, int rotDir);
 }
 
 ///////// utils
@@ -251,7 +251,7 @@ void GLrender(double currentTime, int width, int height) {
 			RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
 
 			for (unsigned int i = 0; i < 10; i++)
-				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i+1]);
+				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i+1], i);
 		}
 
 		else if (exercise[3] || exercise[4]) {
@@ -259,13 +259,14 @@ void GLrender(double currentTime, int width, int height) {
 			RV::_projection = glm::ortho(-(float)width / scale, (float)width / scale, -(float)height / scale, (float)height / scale, RV::zNear, RV::zFar);
 
 			for (unsigned int i = 0; i < 10; i++)
-				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i + 1]);
+				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i + 1], i);
 		}
 
 		else if (exercise[5]) {
 			RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
 
-			MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[1]);
+			for (unsigned int i = 0; i < 10; i++)
+				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i + 1], i);
 		}
 	}
 
@@ -623,6 +624,7 @@ namespace  MyGeomShader {
 
 		static const GLchar * geom_shader_source[] = {
 			"#version 330																	\n\
+			uniform int rotDir;																\n\
 			uniform mat4 trans;																\n\
 			uniform mat4 itrans;															\n\
 			layout(triangles) in;															\n\
@@ -658,48 +660,54 @@ namespace  MyGeomShader {
 										         vec4(0.25, -0.25, 0.25, 1.0),				\n\
 										         vec4(0.25, 0.25, 0.25, 1.0));				\n\
 																							\n\
-				// Cara 1																\n\
-				for (int a = 0; a < 4; a++) {											\n\
-					gl_Position = trans*vertices[a]+gl_in[0].gl_Position; \n\
-					gl_PrimitiveID = 0;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
-				// Cara 2																\n\
-				for (int b = 0; b < 4; b++) {											\n\
-					gl_Position = trans*vertices2[b]+gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 1;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
-				// Cara 3																\n\
-				for (int c = 0; c < 4; c++) {											\n\
-					gl_Position = trans*vertices3[c]+gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 2;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
-				// Cara 4																\n\
-				for (int d = 0; d < 4; d++) {											\n\
-					gl_Position = trans*vertices4[d]+gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 3;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
-				// Cara 5																\n\
-				for (int e = 0; e < 4; e++) {											\n\
-					gl_Position = trans*vertices5[e]+gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 4;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
-				// Cara 6																\n\
-				for (int f = 0; f < 4; f++) {											\n\
-					gl_Position = trans*vertices6[f]+gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 5;													\n\
-					EmitVertex();														\n\
-				}																		\n\
-				EndPrimitive();															\n\
+				// Cara 1																	\n\
+				for (int a = 0; a < 4; a++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices[a]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices[a]+gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 0;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+				// Cara 2																	\n\
+				for (int b = 0; b < 4; b++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices2[b]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices2[b]+gl_in[0].gl_Position;			\n\
+					gl_PrimitiveID = 1;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+				// Cara 3																	\n\
+				for (int c = 0; c < 4; c++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices3[c]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices3[c]+gl_in[0].gl_Position;			\n\
+					gl_PrimitiveID = 2;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+				// Cara 4																	\n\
+				for (int d = 0; d < 4; d++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices4[d]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices4[d]+gl_in[0].gl_Position;			\n\
+					gl_PrimitiveID = 3;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+				// Cara 5																	\n\
+				for (int e = 0; e < 4; e++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices5[e]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices5[e]+gl_in[0].gl_Position;			\n\
+					gl_PrimitiveID = 4;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+				// Cara 6																	\n\
+				for (int f = 0; f < 4; f++) {												\n\
+					if (rotDir%2==0)gl_Position = trans*vertices6[f]+gl_in[0].gl_Position;	\n\
+					else gl_Position = itrans*vertices6[f]+gl_in[0].gl_Position;			\n\
+					gl_PrimitiveID = 5;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
 			}"
 		};
 
@@ -1034,7 +1042,7 @@ namespace  MyGeomShader {
 
 	glm::mat4 myMVP;
 	float testval = 14.0f;
-	void myRenderCode(double currentTime, float x1, float y1) {
+	void myRenderCode(double currentTime, float x1, float y1, int rotDir) {
 
 		// Compile the corresponding shader to the exercise
 		if (exercise[1]) myRenderProgram = myShaderCompile();
@@ -1058,7 +1066,10 @@ namespace  MyGeomShader {
 			myMVP = RV::_MVP * rot;
 		}
 		else if (exercise[3] || exercise[4]) {
-			testval -= 0.02f;
+
+			glUniform1i(glGetUniformLocation(myRenderProgram, "rotDir"), (GLint)rotDir);
+
+			testval -= 0.01f;
 			if (testval < -14.0f)
 				testval = 14.0f;
 
