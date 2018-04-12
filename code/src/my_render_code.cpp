@@ -265,7 +265,7 @@ void GLrender(double currentTime, int width, int height) {
 		else if (exercise[5]) {
 			RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
 
-			for (unsigned int i = 0; i < 10; i++)
+			for (unsigned int i = 0; i < 1; i++)
 				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i + 1], i);
 		}
 	}
@@ -944,42 +944,223 @@ namespace  MyGeomShader {
 			"#version 330																	\n\
 			uniform mat4 rot;																\n\
 			layout(triangles) in;															\n\
-			layout(triangle_strip, max_vertices = 72) out;									\n\
+			layout(triangle_strip, max_vertices = 100) out;									\n\
 			void main()	{																	\n\
-				const vec4 vertices[6] = vec4[6](vec4(-0.33, 0, 0.66, 1),					\n\
+																							\n\
+				// Cara 1																	\n\
+				const vec4 vertices[4] = vec4[4](vec4(-0.33, 0, 0.66, 1),					\n\
 										         vec4(0, -0.33, 0.66, 1),					\n\
 												 vec4(0, 0.33, 0.66, 1),					\n\
-												 vec4(0, -0.33, 0.66, 1),					\n\
-												 vec4(0.33, 0, 0.66, 1),					\n\
-												 vec4(0, 0.33, 0.66, 1));					\n\
+												 vec4(0.33, 0, 0.66, 1));					\n\
 																							\n\
-				const vec4 vertices2[12] = vec4[12](vec4(0.66, 0, 0.33, 1),					\n\
-										         vec4(0.33, 0, 0.66, 1),					\n\
-												 vec4(0.66, -0.33, 0, 1),					\n\
-												 vec4(0, -0.33, 0.66, 1),					\n\
+				// Cara 2																	\n\
+				const vec4 vertices2[6] = vec4[6](vec4(0.66, -0.33, 0, 1),					\n\
+										         vec4(0.66, 0, 0.33, 1),					\n\
+												 vec4(0.33, -0.66, 0, 1),					\n\
 												 vec4(0.33, 0, 0.66, 1),					\n\
-												 vec4(0.66, -0.33, 0, 1),					\n\
-												 vec4(0.33, -0.66, 0, 1),					\n\
-												 vec4(0.66, -0.33, 0, 1),					\n\
-												 vec4(0, -0.33, 0.66, 1),					\n\
-												 vec4(0.33, -0.66, 0, 1),					\n\
 												 vec4(0, -0.66, 0.33, 1),					\n\
 												 vec4(0, -0.33, 0.66, 1));					\n\
 																							\n\
+				// Cara 3																	\n\
+				const vec4 vertices3[6] = vec4[6](vec4(0.33, 0.66, 0, 1),					\n\
+										         vec4(0, 0.66, 0.33, 1),					\n\
+												 vec4(0.66, 0.33, 0, 1),					\n\
+												 vec4(0, 0.33, 0.66, 1),					\n\
+												 vec4(0.66, 0, 0.33, 1),					\n\
+												 vec4(0.33, 0, 0.66, 1));					\n\
+																							\n\
+				// Cara 4																	\n\
+				const vec4 vertices4[6] = vec4[6](vec4(-0.66, 0.33, 0, 1),					\n\
+										         vec4(-0.66, 0, 0.33, 1),					\n\
+												 vec4(-0.33, 0.66, 0, 1),					\n\
+												 vec4(-0.33, 0, 0.66, 1),					\n\
+												 vec4(0, 0.66, 0.33, 1),					\n\
+												 vec4(0, 0.33, 0.66, 1));					\n\
+																							\n\
+				// Cara 5																	\n\
+				const vec4 vertices5[6] = vec4[6](vec4(-0.33, -0.66, 0, 1),					\n\
+										         vec4(0, -0.66, 0.33, 1),					\n\
+												 vec4(-0.66, -0.33, 0, 1),					\n\
+												 vec4(0, -0.33, 0.66, 1),					\n\
+												 vec4(-0.66, 0, 0.33, 1),					\n\
+												 vec4(-0.33, 0, 0.66, 1));					\n\
+																							\n\
+				// Cara 6																	\n\
+				const vec4 vertices6[4] = vec4[4](vec4(0, -0.66, 0.33, 1),					\n\
+										         vec4(-0.33, -0.66, 0, 1),					\n\
+												 vec4(0.33, -0.66, 0, 1),					\n\
+												 vec4(0, -0.66, -0.33, 1));					\n\
+																							\n\
+				// Cara 7																	\n\
+				const vec4 vertices7[4] = vec4[4](vec4(0.66, 0, 0.33, 1),					\n\
+										         vec4(0.66, -0.33, 0, 1),					\n\
+												 vec4(0.66, 0.33, 0, 1),					\n\
+												 vec4(0.66, 0, -0.33, 1));					\n\
+																							\n\
+				// Cara 8																	\n\
+				const vec4 vertices8[4] = vec4[4](vec4(0, 0.66, 0.33, 1),					\n\
+										         vec4(0.33, 0.66, 0, 1),					\n\
+												 vec4(-0.33, 0.66, 0, 1),					\n\
+												 vec4(0, 0.66, -0.33, 1));					\n\
+																							\n\
+				// Cara 9																	\n\
+				const vec4 vertices9[4] = vec4[4](vec4(-0.66, 0, 0.33, 1),					\n\
+										         vec4(-0.66, 0.33, 0, 1),					\n\
+												 vec4(-0.66, -0.33, 0, 1),					\n\
+												 vec4(-0.66, 0, -0.33, 1));					\n\
+																							\n\
+				// Cara 10																	\n\
+				const vec4 vertices10[6]= vec4[6](vec4(0.33, 0, -0.66, 1),					\n\
+										         vec4(0.66, 0, -0.33, 1),					\n\
+												 vec4(0, -0.33, -0.66, 1),					\n\
+												 vec4(0.66, -0.33, 0, 1),					\n\
+												 vec4(0, -0.66, -0.33, 1),					\n\
+												 vec4(0.33, -0.66, 0, 1));					\n\
+																							\n\
+				// Cara 11																	\n\
+				const vec4 vertices11[6]= vec4[6](vec4(0, 0.33, -0.66, 1),					\n\
+										         vec4(0, 0.66, -0.33, 1),					\n\
+												 vec4(0.33, 0, -0.66, 1),					\n\
+												 vec4(0.33, 0.66, 0, 1),					\n\
+												 vec4(0.66, 0, -0.33, 1),					\n\
+												 vec4(0.66, 0.33, 0, 1));					\n\
+																							\n\
+				// Cara 12																	\n\
+				const vec4 vertices12[6]= vec4[6](vec4(-0.33, 0, -0.66, 1),					\n\
+										         vec4(-0.66, 0, -0.33, 1),					\n\
+												 vec4(0, 0.33, -0.66, 1),					\n\
+												 vec4(-0.66, 0.33, 0, 1),					\n\
+												 vec4(0, 0.66, -0.33, 1),					\n\
+												 vec4(-0.33, 0.66, 0, 1));					\n\
+																							\n\
+				// Cara 13																	\n\
+				const vec4 vertices13[6]= vec4[6](vec4(0, -0.33, -0.66, 1),					\n\
+										         vec4(0, -0.66, -0.33, 1),					\n\
+												 vec4(-0.33, 0, -0.66, 1),					\n\
+												 vec4(-0.33, -0.66, 0, 1),					\n\
+												 vec4(-0.66, 0, -0.33, 1),					\n\
+												 vec4(-0.66, -0.33, 0, 1));					\n\
+																							\n\
+				// Cara 14																	\n\
+				const vec4 vertices14[4] = vec4[4](vec4(0, -0.33, -0.66, 1),				\n\
+										         vec4(-0.33, 0, -0.66, 1),					\n\
+												 vec4(0.33, 0, -0.66, 1),					\n\
+												 vec4(0, 0.33, -0.66, 1));					\n\
+																							\n\
+																							\n\
+																							\n\
 				// Cara 1																	\n\
-				for (int a = 0; a < 6; a++) {												\n\
-					gl_Position = rot * vertices[a] + gl_in[0].gl_Position;					\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices[i] + gl_in[0].gl_Position;					\n\
 					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
+																							\n\
 				// Cara 2																	\n\
-				for (int b = 0; b < 12; b++) {												\n\
-					gl_Position = rot * vertices2[b] + gl_in[0].gl_Position;				\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices2[i] + gl_in[0].gl_Position;				\n\
 					gl_PrimitiveID = 1;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
+																							\n\
+				// Cara 3																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices3[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 2;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 4																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices4[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 3;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 5																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices5[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 4;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 6																	\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices6[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 5;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 7																	\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices7[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 6;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 8																	\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices8[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 7;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 9																	\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices9[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 8;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 10																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices10[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 9;														\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 11																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices11[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 10;													\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 12																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices12[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 11;													\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 13																	\n\
+				for (int i = 0; i < 6; i++) {												\n\
+					gl_Position = rot * vertices13[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 12;													\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
+				// Cara 14																	\n\
+				for (int i = 0; i < 4; i++) {												\n\
+					gl_Position = rot * vertices14[i] + gl_in[0].gl_Position;				\n\
+					gl_PrimitiveID = 13;													\n\
+					EmitVertex();															\n\
+				}																			\n\
+				EndPrimitive();																\n\
+																							\n\
 			}"
 		};
 
@@ -987,14 +1168,20 @@ namespace  MyGeomShader {
 			"#version 330																	\n\
 			out vec4 color;																	\n\
 			void main() {																	\n\
-				const vec4 colors[8] = vec4[8](vec4(0, 1, 0, 1.0),							\n\
-										       vec4(0.25, 0.25, 0.5, 1.0),					\n\
-										       vec4(1, 0.25, 0.5, 1.0),						\n\
-										       vec4(0.25, 0, 0, 1.0),						\n\
+				const vec4 colors[14] = vec4[14](vec4(0.5, 0.5, 0.5, 1.0),					\n\
+										       vec4(0, 1, 0, 1.0),							\n\
+										       vec4(1, 0.5, 0, 1.0),						\n\
+										       vec4(0, 0.5, 0, 1.0),						\n\
 										       vec4(1, 0, 0, 1.0),							\n\
-										       vec4(0.5, 0, 0.5, 1.0),						\n\
+										       vec4(1, 1, 0, 1.0),							\n\
+											   vec4(0, 1, 1, 1.0),							\n\
+											   vec4(0.5, 0, 0.5, 1.0),						\n\
+										       vec4(1, 0, 0.5, 1.0),						\n\
+										       vec4(1, 0, 1, 1.0),							\n\
+											   vec4(0, 0, 0.5, 1.0),						\n\
+										       vec4(0.5, 0.5, 0, 1.0),						\n\
 											   vec4(0, 0, 1, 1.0),							\n\
-											   vec4(0, 0.25, 0, 1.0));						\n\
+											   vec4(0.5, 0, 0, 1.0));						\n\
 				color = colors[gl_PrimitiveID];												\n\
 			}"
 		};
@@ -1061,7 +1248,7 @@ namespace  MyGeomShader {
 
 		if (exercise[1] || exercise[2] || exercise[5]) {
 			// Rotation matrix 
-			glm::mat4 rot = glm::rotate(glm::mat4(), (float)5.f, glm::vec3(0.f, 1.f, 0.f));
+			glm::mat4 rot = glm::rotate(glm::mat4(), (float)(-0.5f*currentTime), glm::vec3(0.f, 1.f, 0.f));
 			glUniformMatrix4fv(glGetUniformLocation(myRenderProgram, "rot"), 1, GL_FALSE, glm::value_ptr(myMVP));
 			myMVP = RV::_MVP * rot;
 		}
