@@ -944,7 +944,7 @@ namespace  MyGeomShader {
 			"#version 330																	\n\
 			uniform mat4 rot;																\n\
 			layout(triangles) in;															\n\
-			layout(triangle_strip, max_vertices = 100) out;									\n\
+			layout(triangle_strip, max_vertices = 72) out;									\n\
 			void main()	{																	\n\
 																							\n\
 				// Cara 1																	\n\
