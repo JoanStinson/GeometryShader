@@ -1119,6 +1119,7 @@ namespace  MyGeomShader {
 				// Cara 14																	\n\
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices14[i]+ gl_in[0].gl_Position;\n\
+					else gl_Position = itrans*vertices14[i]+ gl_in[0].gl_Position;			\n\
 					gl_PrimitiveID = 13;													\n\
 					EmitVertex();															\n\
 				}																			\n\
@@ -1421,6 +1422,7 @@ namespace  MyGeomShader {
 				// Cara 14																	\n\
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices14[i]+ gl_in[0].gl_Position;\n\
+					else gl_Position = itrans*vertices14[i]+ gl_in[0].gl_Position;\n\
 					gl_PrimitiveID = 13;													\n\
 					EmitVertex();															\n\
 				}																			\n\
