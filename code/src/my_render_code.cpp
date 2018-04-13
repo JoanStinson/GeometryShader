@@ -275,8 +275,17 @@ void GLrender(double currentTime, int width, int height) {
 			RV::_projection = glm::perspective(RV::FOV, (float)width / (float)height, RV::zNear, RV::zFar);
 			RV::panv[0] = -5.f;
 
-			for (unsigned int i = 0; i < 10; i++) 
-				MyGeomShader::myRenderCode(currentTime, randPoints[i], randPoints[i + 1], i);
+			// 1 columna
+			for (unsigned int i = 0; i < 4; i++)
+				MyGeomShader::myRenderCode(currentTime, randPoints[0], randPoints[i] + 5.f, i);
+
+			// 2 columna
+			for (unsigned int i = 0; i < 4; i++)
+				MyGeomShader::myRenderCode(currentTime, randPoints[2], randPoints[i] + 5.f, i);
+
+			// 3 columna
+			for (unsigned int i = 0; i < 4; i++)
+				MyGeomShader::myRenderCode(currentTime, randPoints[2], randPoints[i] + 5.f, i);
 		}
 
 		else if (exercise[6]) {
@@ -1630,7 +1639,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices[i] + gl_in[0].gl_Position;	\n\
 					else gl_Position = itrans*vertices[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1639,7 +1647,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices2[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices2[i] + gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1648,7 +1655,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices3[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices3[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1657,7 +1663,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices4[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices4[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1666,7 +1671,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices5[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices5[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1675,7 +1679,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices6[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices6[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1684,7 +1687,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices7[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices7[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1693,7 +1695,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices8[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices8[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1702,7 +1703,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices9[i] + gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices9[i] + gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1711,7 +1711,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices10[i] +gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices10[i] +gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;														\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1720,7 +1719,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices11[i]+ gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices11[i]+ gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;													\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1729,7 +1727,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices12[i]+ gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices12[i]+ gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;													\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1738,7 +1735,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 6; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices13[i]+ gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices13[i]+ gl_in[0].gl_Position;			\n\
-					gl_PrimitiveID = 0;													\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1747,7 +1743,6 @@ namespace  MyGeomShader {
 				for (int i = 0; i < 4; i++) {												\n\
 					if (rotDir%2==0)gl_Position = trans*vertices14[i]+ gl_in[0].gl_Position;\n\
 					else gl_Position = itrans*vertices14[i]+ gl_in[0].gl_Position;\n\
-					gl_PrimitiveID = 0;													\n\
 					EmitVertex();															\n\
 				}																			\n\
 				EndPrimitive();																\n\
@@ -1757,24 +1752,10 @@ namespace  MyGeomShader {
 
 		static const GLchar * fragment_shader_source[] = {
 			"#version 330																	\n\
-			uniform float time;																\n\
+			uniform vec4 ambient;															\n\
 			out vec4 color;																	\n\
 			void main() {																	\n\
-				const vec4 colors[14] = vec4[14](vec4(0, 1, 0, 1.0),					\n\
-										       vec4(0, 1, 0, 1.0),							\n\
-										       vec4(0, 0.25, 0, 1.0),						\n\
-										       vec4(0.25, 1, 0, 1.0),						\n\
-										       vec4(0, 1, 0.25, 1.0),							\n\
-										       vec4(0, 0.75, 0, 1.0),							\n\
-											   vec4(0, 0.35, 0, 1.0),							\n\
-											   vec4(0, 0.1, 0, 1.0),						\n\
-										       vec4(0, 0.9, 0, 1.0),						\n\
-										       vec4(0, 1, 0, 1.0),							\n\
-											   vec4(0, 0.5, 0, 1.0),						\n\
-										       vec4(0.25, 1, 0, 1.0),						\n\
-											   vec4(0, 1, 0.1, 1.0),							\n\
-											   vec4(0.1, 1, 0, 1.0));						\n\
-				color = colors[gl_PrimitiveID];												\n\
+				color = ambient;															\n\
 			}"
 		};
 
@@ -1838,6 +1819,8 @@ namespace  MyGeomShader {
 		// Random points
 		glUniform1f(glGetUniformLocation(myRenderProgram, "x1"), (GLfloat)x1);
 		glUniform1f(glGetUniformLocation(myRenderProgram, "y1"), (GLfloat)y1);
+
+		glUniform4f(glGetUniformLocation(myRenderProgram, "ambient"), 0.f, 0.5f + 0.5f*sin(currentTime), 0.f, 1.f);
 
 		if (exercise[1] || exercise[2]) {
 			// Rotation matrix 
