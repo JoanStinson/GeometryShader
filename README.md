@@ -1,6 +1,6 @@
-# C++ OpenGL Shader: 
+# C++ OpenGL Shader
 
-Cubes & Truncated Octahedrons Transformations
+Cubes and Truncated Octahedrons Transformations
 - Scale
 - Rotation
 - Translation
