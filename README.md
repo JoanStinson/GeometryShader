@@ -1,4 +1,4 @@
-# C++ OpenGL Shader
+# C++ OpenGL Geometry Shader
 
 Cubes and Truncated Octahedrons Transformations:
 - Scale
